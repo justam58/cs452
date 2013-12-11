@@ -1,0 +1,5 @@
+young,myope,yes,normal
+presbyopic,hypermetrope,no,reduced
+pre-presbyopic,myope,yes,normal
+young,hypermetrope,yes,reduced
+presbyopic,myope,no,normal

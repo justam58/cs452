@@ -21,21 +21,27 @@ public class DTC {
 	public Node construct(int level){
 //		System.out.println(examples);
 		Node root = new Node(level);
-		if(checkAllExamples("Yes")){
-//			System.out.println("here1");
-			root.setResult("+");
-			return root;
-		}
-		if(checkAllExamples("No")){
-//			System.out.println("here2");
-			root.setResult("-");
-			return root;
-		}
-		if(attributes.size() == 0){
+//		System.out.printf("arrrrrrrr: %s \n",attributes);
+		if(attributes.isEmpty()){
 //			System.out.println("here3");
 			root.setResult(getMostCommonResult());
 			return root;
 		}
+		if(checkAllExamples("yes")){
+//			System.out.println("here1");
+			root.setResult("+");
+			return root;
+		}
+		if(checkAllExamples("no")){
+//			System.out.println("here2");
+			root.setResult("-");
+			return root;
+		}
+//		if(attributes.size() == 0){
+////			System.out.println("here3");
+//			root.setResult(getMostCommonResult());
+//			return root;
+//		}
 		
 		int A = getHighestInfoGain();
 		root.setSplit(attributes.get(A));
@@ -57,6 +63,8 @@ public class DTC {
 //			System.out.println(cat);
 			Node subNode = new Node(cat,level);
 			ArrayList<ArrayList<String>> subExamples = getSubExamples(A, cat);
+//			System.out.println("sub examples are");
+//			System.out.println(subExamples);
 			if(subExamples.isEmpty()){
 				root.setResult(getMostCommonResult());
 			}
@@ -77,7 +85,7 @@ public class DTC {
 		ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 		for(int i = 0; i < examples.size(); i++){
 			if(examples.get(i).get(index).equals(cat)){
-				ArrayList<String> example = examples.get(i);
+				ArrayList<String> example = new ArrayList<String>(examples.get(i));
 				example.remove(index);
 				result.add(example);
 			}
@@ -99,6 +107,7 @@ public class DTC {
 		double I = getExpectedInformationNeeded();
 		for(int i = 0; i < attributes.size(); i++){
 			double gain = getGain(i,I);
+//			System.out.println(gain);
 			if(index == -1){
 				index = i;
 			}
@@ -113,7 +122,7 @@ public class DTC {
 		double t = 0;
 		double f = 0;
 		for(int i = 0; i < examples.size(); i++){
-			if(examples.get(i).get(attributes.size()).equals("Yes")){
+			if(examples.get(i).get(attributes.size()).equals("yes")){
 				t++;
 			}
 			else{
@@ -123,6 +132,8 @@ public class DTC {
 		double total = t + f;
 		double tp = t/(double)total;
 		double fp = f/(double)total;
+//		System.out.println(t);
+//		System.out.println(f);
 		if(fp == 0){
 			return 0;
 		}
@@ -136,10 +147,10 @@ public class DTC {
 		double t = 0;
 		double f = 0;
 		for(int i = 0; i < examples.size(); i++){
-			if(examples.get(i).get(index).equals(catogory)&& examples.get(i).get(attributes.size()).equals("Yes")){
+			if(examples.get(i).get(index).equals(catogory)&& examples.get(i).get(attributes.size()).equals("yes")){
 				t++;
 			}
-			else if(examples.get(i).get(index).equals(catogory)&& examples.get(i).get(attributes.size()).equals("No")){
+			else if(examples.get(i).get(index).equals(catogory)&& examples.get(i).get(attributes.size()).equals("no")){
 				f++;
 			}
 		}
@@ -188,7 +199,7 @@ public class DTC {
 	}
 
 	private boolean checkAllExamples(String tar) {
-//		System.out.println(attributes.size());
+//		System.out.println(attributes);
 		for(int i = 0; i < examples.size(); i++){
 //			System.out.println(examples.get(i));
 			if(!examples.get(i).get(attributes.size()).equals(tar)){
@@ -202,7 +213,7 @@ public class DTC {
 		int t = 0;
 		int f = 0;
 		for(int i = 0; i < examples.size(); i++){
-			if(examples.get(i).equals("Yes")){
+			if(examples.get(i).equals("yes")){
 				t++;
 			}
 			else{

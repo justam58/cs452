@@ -33,10 +33,15 @@ public class Main {
 		ArrayList<ArrayList<String>> examples = new ArrayList<ArrayList<String>>();
 		while(sc.hasNextLine()){
 			String example = sc.nextLine();
-			String[] vs = example.split(", ");
+			String[] vs = example.split(",");
 			ArrayList<String> values = new ArrayList<String>();
 			for(int i = 0; i < vs.length; i++){
-				values.add(vs[i].trim());
+				if(i == (vs.length-1)){
+					values.add(vs[i].trim().toLowerCase());
+				}
+				else{
+					values.add(vs[i].trim());
+				}
 			}
 			examples.add(values);
 		}
@@ -45,17 +50,25 @@ public class Main {
 		System.out.println(root.toString());
 		sc.close();
 		
-		while(true){
-			doTest(root);
+		System.out.println("Please enter file name:");
+		
+		File testFile = new File(scc.next());
+		sc = new Scanner(testFile);
+		
+		while(sc.hasNextLine()){
+			String test = sc.nextLine();
+			doTest(root,test,attrs);
 		}
+
+		sc.close();
 	}
 	
-	public static void doTest(Node root){
-		System.out.println("Please a test case:");
-		String test = "\n";
-		while(!test.contains(",")){
-			test = scc.nextLine();
-		}
+	public static void doTest(Node root, String test, ArrayList<String>attrs){
+//		System.out.println("Please a test case:");
+//		String test = "\n";
+//		while(!test.contains(",")){
+//			test = scc.nextLine();
+//		}
 		String[] as = test.split(",");
 		ArrayList<String> ast = new ArrayList<String>();
 		for(int i = 0; i < as.length; i++){
@@ -67,7 +80,7 @@ public class Main {
 			boolean found = false;
 			for(int i = 0; i < children.size(); i++){
 				for(int j = 0; j < ast.size(); j++){
-					if(ast.get(j).equals((children.get(i).getName()))){
+					if(ast.get(j).equals(children.get(i).getName()) && attrs.get(j).equals(children.get(i).getSplitBy())){
 //						System.out.printf("go %s\n", children.get(i).getName());
 						current = children.get(i);
 						found = true;
